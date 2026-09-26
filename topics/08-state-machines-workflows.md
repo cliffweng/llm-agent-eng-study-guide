@@ -13,7 +13,7 @@ nav_order: 9
 
 ## Why it matters
 
-Fully autonomous agent loops (see [Agents & planning loops](05-agents-planning-loops.html)) are flexible but unpredictable — the exact same input can take a different path through the loop on different runs. A lot of production LLM systems don't need that flexibility; they need a small, fixed set of steps executed reliably, with LLM calls plugged in at specific points. That's a workflow, and modeling it explicitly as a state machine or graph makes the system testable, debuggable, and far easier to reason about than an open-ended loop.
+Fully autonomous agent loops (see [Agents & planning loops](../05-agents-planning-loops/)) are flexible but unpredictable — the exact same input can take a different path through the loop on different runs. A lot of production LLM systems don't need that flexibility; they need a small, fixed set of steps executed reliably, with LLM calls plugged in at specific points. That's a workflow, and modeling it explicitly as a state machine or graph makes the system testable, debuggable, and far easier to reason about than an open-ended loop.
 
 ## Core concepts
 

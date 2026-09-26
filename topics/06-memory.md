@@ -13,12 +13,12 @@ nav_order: 7
 
 ## Why it matters
 
-LLMs are stateless (see [LLM basics](01-llm-basics.html)), so any "memory" an agent appears to have is something you built. Choosing the wrong kind of memory for the wrong kind of information is a common source of both bad UX (the assistant "forgets" things it should know) and bloated cost (re-sending everything, always, forever). This topic is about picking the right storage and retrieval strategy for different lifespans of information.
+LLMs are stateless (see [LLM basics](../01-llm-basics/)), so any "memory" an agent appears to have is something you built. Choosing the wrong kind of memory for the wrong kind of information is a common source of both bad UX (the assistant "forgets" things it should know) and bloated cost (re-sending everything, always, forever). This topic is about picking the right storage and retrieval strategy for different lifespans of information.
 
 ## Core concepts
 
 - **Short-term (working) memory** is just the current context window — the conversation history and any scratch state passed along within a single session. It's fast and simple but bounded by the context window and disappears when the session ends unless explicitly persisted.
-- **Long-term memory** is information persisted across sessions — user preferences, facts learned once and expected to be recalled later, prior decisions. This typically lives outside the model, in a database, key-value store, or vector store, and is explicitly retrieved and injected into context when relevant (this is functionally a form of RAG — see [RAG fundamentals](10-rag-fundamentals.html)).
+- **Long-term memory** is information persisted across sessions — user preferences, facts learned once and expected to be recalled later, prior decisions. This typically lives outside the model, in a database, key-value store, or vector store, and is explicitly retrieved and injected into context when relevant (this is functionally a form of RAG — see [RAG fundamentals](../10-rag-fundamentals/)).
 - **Episodic memory** stores specific past experiences/events ("what happened last time," "what did we discuss in session 3") as opposed to distilled facts. Useful for agents that need to recall specific prior interactions or outcomes, not just general knowledge about the user.
 - **Semantic memory** (a common companion term) stores generalized facts/knowledge distilled from experience, decoupled from *when* they were learned — e.g., "the user prefers metric units," extracted once from an episodic interaction and stored as a standalone fact.
 - **Memory requires a write policy and a read policy, not just storage.** *Write*: what gets saved, when, and how it's summarized/extracted (naive approach: dump every message; better: extract salient facts/decisions). *Read*: what gets retrieved and injected into context for a given turn (naive: dump everything; better: retrieve only what's relevant, ranked by recency/similarity/importance).
@@ -51,12 +51,12 @@ Think of short-term memory as RAM (fast, session-scoped, disappears on restart) 
    Answer: You need explicit reconciliation logic — e.g., timestamp facts and prefer the most recent, detect contradictions at write time and either overwrite or flag for review, or store facts with provenance/confidence so retrieval can pick the most trustworthy one. Naive append-only storage without reconciliation will eventually feed contradictory context to the model.
 
 4. **Why is memory retrieval basically a RAG problem?**
-   Answer: Both involve selecting a relevant subset of stored information to inject into a bounded context window based on the current query/turn, typically via similarity search or ranking over an external store — the same techniques (embeddings, hybrid search, reranking) that apply to document RAG apply to memory recall (see [RAG fundamentals](10-rag-fundamentals.html)).
+   Answer: Both involve selecting a relevant subset of stored information to inject into a bounded context window based on the current query/turn, typically via similarity search or ranking over an external store — the same techniques (embeddings, hybrid search, reranking) that apply to document RAG apply to memory recall (see [RAG fundamentals](../10-rag-fundamentals/)).
 
 5. **What's a concrete failure mode of injecting too much "remembered" context into every prompt?**
    Answer: It wastes tokens/cost on irrelevant information, can push relevant current-turn context further from where the model attends most reliably, and can even confuse the model by surfacing stale or tangential facts as if they matter to the current request — relevance-gated retrieval (only pull in memory likely to matter for this turn) avoids this.
 
-6. **How is "memory" different from "context management" (see [Context management & compaction](07-context-management-compaction.html)), given both decide what information the model sees?**
+6. **How is "memory" different from "context management" (see [Context management & compaction](../07-context-management-compaction/)), given both decide what information the model sees?**
    Answer: Memory is about persisting and later recalling information *across* sessions — user preferences, past decisions, facts that should survive after the current conversation ends. Context management is about keeping a *single* long-running session coherent as it approaches the context window limit, via compaction, summarization, or offloading. They share techniques (summarize, store externally, retrieve selectively), but memory's failure mode is "a future session doesn't know something it should," while context management's failure mode is "this session breaks or degrades before the task is done."
 
 ## Watch

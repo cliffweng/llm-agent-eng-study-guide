@@ -26,6 +26,12 @@ search:
 nav_sort: case_insensitive
 heading_anchors: true
 
+defaults:
+  - scope:
+      path: "topics"
+    values:
+      permalink: /topics/:basename/
+
 aux_links:
   "View on GitHub":
     - "https://github.com/cliffweng/llm-agent-eng-study-guide"
