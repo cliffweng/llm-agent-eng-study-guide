@@ -67,11 +67,13 @@ These are the product locks this guide was built against — echoed here so futu
 
 ## Enabling GitHub Pages
 
-This repo ships a GitHub Actions workflow (`.github/workflows/pages.yml`) that builds the Jekyll/Just the Docs site and deploys it to Pages on every push to `main`. To turn it on for a new fork/repo:
+Just the Docs is configured via `_config.yml` (remote theme). After this lands on `main`:
 
-1. Go to the repo's **Settings → Pages**.
-2. Under **Build and deployment → Source**, select **GitHub Actions**.
-3. Push to `main` (or re-run the workflow from the **Actions** tab). The site will publish to `https://<username>.github.io/<repo>/`.
+1. Repo **Settings → Pages**.
+2. **Build and deployment → Source**: **Deploy from a branch**.
+3. Branch: `main` / folder: `/ (root)`.
+4. Save. Site publishes to https://cliffweng.github.io/llm-agent-eng-study-guide/
+
 
 ## Local preview
 
