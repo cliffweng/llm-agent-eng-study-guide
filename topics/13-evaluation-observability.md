@@ -60,6 +60,10 @@ Think of tracing as your system's logs/APM equivalent, and evals as your test su
 4. **Why is tracing especially important for agents and RAG systems, more so than for a single-prompt LLM call?**
    Answer: Both involve multiple opaque intermediate steps (tool calls and their results, retrieved chunks, intermediate reasoning) between the input and final output — without capturing each step, a wrong final answer gives you no way to tell whether the failure was in retrieval, a tool call, an intermediate reasoning step, or the final generation. A single-prompt call has much less hidden machinery to go wrong in between.
 
+   **Live trace follow-up:** How would an operator's screen recover if reconnecting delivered the same event twice or a child span arrived before its parent? Deduplicate deliveries by event ID, update spans using stable IDs and versions, and preserve unresolved parent references. Show when the view is disconnected or stale. Resuming the observation stream must not repeat a tool action.
+
+   Optional practice: [AI Agent Run Inspector — free question and complete reference answer](https://frontendatlas.com/system-design/ai-agent-run-inspector).
+
 5. **Where should your eval set's hardest cases come from, and why is that better than only writing cases you imagine in advance?**
    Answer: From real production failures/traces — actual inputs that broke the system or drew a user complaint — because these represent the failure distribution that actually occurs, which is often different (and weirder) than what you'd think to write by hand. Imagined edge cases are a useful supplement but shouldn't be the primary source, since they reflect your assumptions about failure rather than reality.
 
